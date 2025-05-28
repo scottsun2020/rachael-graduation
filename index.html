@@ -169,26 +169,6 @@
  <!-- Firebase App (core) and Realtime Database -->
 
   <script>
-    const firebaseConfig = {
-      apiKey: "AIzaSyD-nDvaE2BA3RmGqszyJXLewbaSWDwjQUs",
-      authDomain: "rachael-guestbook.firebaseapp.com",
-      databaseURL: "https://rachael-guestbook-default-rtdb.firebaseio.com",
-      projectId: "rachael-guestbook",
-      storageBucket: "rachael-guestbook.firebasestorage.app",
-      messagingSenderId: "539514799693",
-      appId: "1:539514799693:web:617924611c89e4a14bbe04"
-    };
-
-    firebase.initializeApp(firebaseConfig);
-    const db = firebase.database();
-
-  </script>
-
-  
-
-  
-
-  <script>
     function updateCountdown() {
       const targetDate = new Date("2025-05-30T16:00:00");
       const now = new Date();
@@ -221,34 +201,8 @@
     //   document.getElementById('guestMessage').value = '';
     // }
     
-    function addMessage() {
-      const name = document.getElementById('guestName').value.trim();
-      const message = document.getElementById('guestMessage').value.trim();
-      if (!name || !message) return;
-
-      db.ref('guestbook').push({
-        name: name,
-        message: message,
-        timestamp: Date.now()
-      });
-
-      document.getElementById('guestName').value = '';
-      document.getElementById('guestMessage').value = '';
-    }
-
-    function loadMessages() {
-      const guestbook = document.getElementById('guestbook-messages');
-      db.ref('guestbook').on('child_added', (snapshot) => {
-        const data = snapshot.val();
-        const li = document.createElement('li');
-        li.innerHTML = `<strong>${data.name}</strong>: ${data.message}`;
-        guestbook.appendChild(li);
-      });
-    }
-
     window.onload = function () {
       updateCountdown();
-      loadMessages();
     };
 
 
@@ -301,5 +255,8 @@
 
     setInterval(draw, 33);
   </script>
+
+  <script src="index.js"></script>
+
 </body>
 </html>
