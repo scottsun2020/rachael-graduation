@@ -9,16 +9,20 @@
 
     body {
       font-family: 'Raleway', sans-serif;
-      background: #f8f9f3;
+      background: linear-gradient(to bottom right, #ffe6f0, #e0f7fa);
+      background-attachment: fixed;
+      background-size: cover;
       color: #2e2e2e;
       margin: 0;
       padding: 0;
+      overflow-x: hidden;
     }
     header {
-      background: #2e7031;
+      background: rgba(46, 112, 49, 0.9);
       color: #f7dc6f;
       padding: 60px 20px;
       text-align: center;
+      border-bottom: 4px solid #d4af37;
     }
     header h1 {
       margin: 0;
@@ -32,7 +36,10 @@
     .section {
       max-width: 800px;
       margin: 50px auto;
-      padding: 0 20px;
+      padding: 30px 20px;
+      background-color: rgba(255, 255, 255, 0.85);
+      border-radius: 12px;
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
     }
     h2 {
       color: #2e7031;
@@ -93,13 +100,23 @@
       border-radius: 10px;
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
     }
+    .confetti {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      z-index: 1000;
+    }
   </style>
 </head>
 <body>
+  <canvas class="confetti" id="confetti"></canvas>
 
   <button onclick="document.getElementById('bgm').play()">🎵 Click to Play Music</button>
   <audio id="bgm" loop>
-  <source src="rachaels_time_to_shine.mp3" type="audio/mpeg">
+    <source src="rachaels_time_to_shine.mp3" type="audio/mpeg">
     Your browser does not support the audio element.
   </audio>
 
@@ -124,7 +141,7 @@
   <section class="section">
     <h2>Favorite Quote</h2>
     <div class="quote">
-      I am water<br>
+      i am water<br>
       soft enough<br>
       to offer life<br>
       tough enough<br>
@@ -132,12 +149,10 @@
     </div>
   </section>
 
-
-
   <section class="section photo-gallery">
     <h2>Gallery</h2>
-    <img src="236dc796e2d9268fe6b86ad884217b0f.JPG" alt="Rachael by greenery">
     <img src="f6948202c5c0b8b5f3afbf22abe03264.JPG" alt="Rachael on stairs">
+    <img src="236dc796e2d9268fe6b86ad884217b0f.JPG" alt="Rachael by greenery">
     <img src="0c010a7026c2fbafc3a0cdd212520cad.JPG" alt="Group of friends">
   </section>
 
@@ -181,6 +196,55 @@
       document.getElementById('guestName').value = '';
       document.getElementById('guestMessage').value = '';
     }
+
+    // Confetti animation
+    const confetti = document.getElementById('confetti');
+    const ctx = confetti.getContext('2d');
+    confetti.width = window.innerWidth;
+    confetti.height = window.innerHeight;
+    let particles = Array.from({length: 150}, () => createParticle());
+
+    function createParticle() {
+      return {
+        x: Math.random() * confetti.width,
+        y: Math.random() * confetti.height,
+        r: Math.random() * 6 + 2,
+        d: Math.random() * 100,
+        color: `hsl(${Math.random() * 360}, 70%, 60%)`,
+        tilt: Math.random() * 10 - 10,
+        tiltAngleIncrement: Math.random() * 0.05 + 0.01,
+        tiltAngle: 0
+      };
+    }
+
+    function draw() {
+      ctx.clearRect(0, 0, confetti.width, confetti.height);
+      particles.forEach((p, i) => {
+        ctx.beginPath();
+        ctx.lineWidth = p.r;
+        ctx.strokeStyle = p.color;
+        ctx.moveTo(p.x + p.tilt + p.r / 2, p.y);
+        ctx.lineTo(p.x + p.tilt, p.y + p.tilt + p.r / 2);
+        ctx.stroke();
+      });
+      update();
+    }
+
+    function update() {
+      particles.forEach((p, i) => {
+        p.tiltAngle += p.tiltAngleIncrement;
+        p.y += (Math.cos(p.d) + 3 + p.r / 2) / 2;
+        p.x += Math.sin(p.d);
+        p.tilt = Math.sin(p.tiltAngle - i / 3) * 15;
+
+        if (p.y > confetti.height) {
+          particles[i] = createParticle();
+          particles[i].y = 0;
+        }
+      });
+    }
+
+    setInterval(draw, 33);
   </script>
 </body>
 </html>
