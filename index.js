@@ -1,6 +1,4 @@
-// index.js - Handles guestbook and countdown logic
-
-// Firebase config
+// Initialize Firebase
 const firebaseConfig = {
     apiKey: "AIzaSyD-nDvaE2BA3RmGqszyJXLewbaSWDwjQUs",
     authDomain: "rachael-guestbook.firebaseapp.com",
@@ -14,7 +12,7 @@ const firebaseConfig = {
   firebase.initializeApp(firebaseConfig);
   const db = firebase.database();
   
-  // Add message to guestbook
+  // Add message to Firebase
   function addMessage() {
     const name = document.getElementById('guestName').value.trim();
     const message = document.getElementById('guestMessage').value.trim();
@@ -30,7 +28,7 @@ const firebaseConfig = {
     document.getElementById('guestMessage').value = '';
   }
   
-  // Load guestbook messages
+  // Load messages from Firebase
   function loadMessages() {
     const guestbook = document.getElementById('guestbook-messages');
     db.ref('guestbook').on('child_added', (snapshot) => {
@@ -41,30 +39,12 @@ const firebaseConfig = {
     });
   }
   
-  // Update countdown timer
-  function updateCountdown() {
-    const targetDate = new Date("2025-05-30T16:00:00");
-    const now = new Date();
-    const diff = targetDate - now;
   
-    if (diff <= 0) {
-      document.getElementById('countdown').innerText = "🎓 It's Graduation Time! 🎉";
-      return;
-    }
+  // Assign to global scope so button onclick can access it
+  window.addMessage = addMessage;
   
-    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-    const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
-    const minutes = Math.floor((diff / (1000 * 60)) % 60);
-    const seconds = Math.floor((diff / 1000) % 60);
-  
-    document.getElementById('countdown').innerText = `${days}d ${hours}h ${minutes}m ${seconds}s left until graduation!`;
-  }
-  
-  // Initialize all handlers
-  window.onload = () => {
-    updateCountdown();
+  // Initialize on load
+  window.onload = function () {
     loadMessages();
-    window.addMessage = addMessage;
-    setInterval(updateCountdown, 1000);
   };
   
