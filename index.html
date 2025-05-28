@@ -164,13 +164,10 @@
     <ul id="guestbook-messages"></ul>
   </section>
 
-  <script type="module">
-    // Import the functions you need from the SDKs you need
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-app.js";
-    // TODO: Add SDKs for Firebase products that you want to use
-    // https://firebase.google.com/docs/web/setup#available-libraries
-  
-    // Your web app's Firebase configuration
+ <!-- Firebase App (core) and Realtime Database -->
+  <script src="https://www.gstatic.com/firebasejs/10.10.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.10.0/firebase-database.js"></script>
+  <script>
     const firebaseConfig = {
       apiKey: "AIzaSyD-nDvaE2BA3RmGqszyJXLewbaSWDwjQUs",
       authDomain: "rachael-guestbook.firebaseapp.com",
@@ -180,10 +177,12 @@
       messagingSenderId: "539514799693",
       appId: "1:539514799693:web:617924611c89e4a14bbe04"
     };
-  
-    // Initialize Firebase
-    const app = initializeApp(firebaseConfig);
+
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
   </script>
+
+  
 
   
 
@@ -219,6 +218,7 @@
     //   document.getElementById('guestName').value = '';
     //   document.getElementById('guestMessage').value = '';
     // }
+    
     function addMessage() {
       const name = document.getElementById('guestName').value.trim();
       const message = document.getElementById('guestMessage').value.trim();
@@ -244,7 +244,11 @@
       });
     }
 
-    window.onload = loadMessages;
+    window.onload = function () {
+      updateCountdown();
+      loadMessages();
+    };
+
 
     // Confetti animation
     const confetti = document.getElementById('confetti');
