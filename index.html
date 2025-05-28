@@ -143,7 +143,7 @@
   <section class="section">
     <h2>Favorite Quote</h2>
     <div class="quote">
-      i am water<br>
+      I am water<br>
       soft enough<br>
       to offer life<br>
       tough enough<br>
@@ -181,6 +181,7 @@
 
     firebase.initializeApp(firebaseConfig);
     const db = firebase.database();
+
   </script>
 
   
@@ -225,7 +226,7 @@
       const message = document.getElementById('guestMessage').value.trim();
       if (!name || !message) return;
 
-      firebase.database().ref('guestbook').push({
+      db.ref('guestbook').push({
         name: name,
         message: message,
         timestamp: Date.now()
@@ -237,7 +238,7 @@
 
     function loadMessages() {
       const guestbook = document.getElementById('guestbook-messages');
-      firebase.database().ref('guestbook').on('child_added', (snapshot) => {
+      db.ref('guestbook').on('child_added', (snapshot) => {
         const data = snapshot.val();
         const li = document.createElement('li');
         li.innerHTML = `<strong>${data.name}</strong>: ${data.message}`;
