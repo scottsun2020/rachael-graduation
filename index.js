@@ -41,10 +41,28 @@ const firebaseConfig = {
   
   
   // Assign to global scope so button onclick can access it
-  window.addMessage = addMessage;
+    window.addMessage = addMessage;
   
-  // Initialize on load
+
+
+  function testFirebaseConnection() {
+    const testRef = db.ref('connection_test');
+    testRef.set({
+      test: 'Hello from Rachael’s Graduation Page!',
+      timestamp: Date.now()
+    }).then(() => {
+      console.log("✅ Firebase test write successful.");
+    }).catch((error) => {
+      console.error("❌ Firebase test write failed:", error);
+    });
+  }
+  
+  // Call the test function once on load
   window.onload = function () {
+    //window.addMessage = addMessage; // Assign to global scope
+    
     loadMessages();
+    testFirebaseConnection(); // 👈 Add this line
   };
+  
   
