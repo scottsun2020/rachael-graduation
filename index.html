@@ -115,6 +115,20 @@
       pointer-events: none;
       z-index: 1000;
     }
+    .balloons {
+      position: fixed;
+      bottom: -50px;
+      left: 50%;
+      animation: rise 10s linear infinite;
+      font-size: 2rem;
+      z-index: 900;
+      opacity: 0.8;
+    }
+    @keyframes rise {
+      0% { transform: translateX(-50%) translateY(0); opacity: 1; }
+      100% { transform: translateX(-50%) translateY(-120vh); opacity: 0; }
+    }
+
   </style>
 </head>
 <body>
@@ -269,6 +283,7 @@
   </script>
 
   <script src="index.js" defer></script>
+  <div class="balloons">🎈</div>
 
 
 </body>
